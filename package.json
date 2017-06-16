@@ -1,0 +1,77 @@
+{
+  "name": "rx-collection",
+  "version": "0.1.0",
+  "description": "RxJS utils to work with observable collection of observables",
+  "scripts": {
+    "clean": "rimraf dist coverage",
+    "lint": "npm-run-all --parallel lint:*",
+    "lint:src": "tslint src/**/*.ts --type-check -c tslint.json -p tsconfig.tslint.json -t verbose",
+    "lint:spec": "tslint spec/**/*.ts --type-check -c tslint.json -p tsconfig.tslint.json -t verbose",
+    "test": "nodemon --watch src --watch spec -e ts --exec \"yarn run test:single\"",
+    "test:single": "jasmine --config=jasmine.json",
+    "test:cover": "nyc yarn run test:single",
+    "build:commonjs": "npm-run-all --parallel build:commonjs:files build:commonjs:copydts",
+    "build:commonjs:files": "tsc --outDir dist/cjs --target es5 -m commonjs --mapRoot ../cjs --declaration",
+    "build:commonjs:copydts": "cd src && copyfiles **/*.d.ts ../dist/cjs",
+    "build:es": "npm-run-all --parallel build:es:files build:es:copydts",
+    "build:es:files": "tsc --outDir dist/es --mapRoot ../es --declaration",
+    "build:es:copydts": "cd src && copyfiles **/*.d.ts ../dist/es",
+    "build:umd": "npm-run-all --parallel build:umd:regular build:umd:min",
+    "build:umd:regular": "cross-env NODE_ENV=development webpack --config=config/webpack.dev.js",
+    "build:umd:min": "cross-env NODE_ENV=production webpack --config=config/webpack.prod.js",
+    "build": "npm-run-all --parallel build:commonjs build:umd",
+    "make-packages": "node ./config/make-packages.js",
+    "patch:umd": "node ./config/patch/patch-umd.js",
+    "prepublish": "npm-run-all clean lint test:single build make-packages patch:umd",
+    "precommit": "lint-staged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poetez/rx-collection.git"
+  },
+  "keywords": [
+    "collection",
+    "array",
+    "dictionary",
+    "rxjs",
+    "reactive"
+  ],
+  "author": "Vlad Rindevich <rindevich.vs@gmail.com> (https://github.com/Lodin)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/poetez/rx-collection/issues"
+  },
+  "homepage": "https://github.com/poetez/rx-collection#readme",
+  "devDependencies": {
+    "@types/is-plain-object": "^0.0.2",
+    "@types/jasmine": "^2.5.47",
+    "awesome-typescript-loader": "^3.1.3",
+    "codecov": "^2.2.0",
+    "copyfiles": "^1.2.0",
+    "cross-env": "^4.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.2.0",
+    "husky": "^0.13.3",
+    "jasmine": "^2.6.0",
+    "jasmine-spec-reporter": "^4.1.0",
+    "lint-staged": "^3.4.2",
+    "nodemon": "^1.11.0",
+    "npm-run-all": "^4.0.2",
+    "nyc": "^10.3.2",
+    "rimraf": "^2.6.1",
+    "ts-node": "^3.0.4",
+    "tslint": "^5.2.0",
+    "tslint-config-poetez": "^0.1.1",
+    "typescript": "^2.3.2",
+    "util.promisify": "^1.0.0",
+    "webpack": "^2.5.1"
+  },
+  "dependencies": {
+    "is-plain-object": "^2.0.1",
+    "tslib": ">=1.7.0"
+  },
+  "peerDependencies": {
+    "rxjs": "^5.4.0"
+  }
+}
