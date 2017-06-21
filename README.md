@@ -103,5 +103,38 @@ Observable.ofCollection([1, 2])
   });
 ```
 
+### SubjectMap
+An abstraction that allows to create same subject for every collection element, e.g. for merging this subject to collection element. 
+It has following methods:
+
+* `constructor([keys])`. Creates new instance of SubjectMap. Receives one argument:
+  * `keys` (optional). Array, if it exists constructor will create subjects by these keys and put them to `SubjectMap`. 
+* `get(key)`. Gets subject by `key` if it exists or creates new one. The `key` can have any type, like a `key` in `Map`. 
+* `remove(key)`. Removes subject by `key`.
+* `keys()`. Gets the list of all existing keys.
+* `values()`. Gets list of all subjects.
+* `entries()`. Gets list of pairs `[key, subject]`. 
+* `forEach(callback)`. Iterates over the keys and values.
+
+```javascript
+const changeElement = new SubjectMap();
+
+const creator = 
+  state => 
+    Observable.of(state)
+      .merge(
+        changeElement.get(state.id)
+          .map(payload => state => `${state}.${payload}`)
+      )
+      .scan((acc, fn) => fn(acc));
+
+const collection = Observable.ofCollection([{id: 1, data: 'a'}, {id: 2, data: 'b'}], creator)
+  .subscribe(val => {
+    val[0].skip(1).subscribe(el => assert(el === 'a.c'));
+  });
+
+changeElement.get(1).next('c');
+```
+
 ## License
 [MIT](./LICENSE)
