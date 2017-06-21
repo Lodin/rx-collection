@@ -12,8 +12,8 @@ $ npm install --save rxjs rx-collection
 ```
 
 ## API
-* `ofCollection(collection, creator)` is a method to initialize collection and convert all its elements to Observables. It receives 
-two arguments:
+### `ofCollection(collection, creator)`
+Initializes collection and converts all its elements to Observables. Receives two arguments:
   * `collection` - the collection itself. It might be an instance of:
     * `Array`,
     * `Object`,
@@ -45,8 +45,8 @@ observableCollection.subscribe(val => {
   val.get('key2').subscribe(el => assert(el === 2));
 })
 ```
-* `filterCollection(callback)` is a method to filter collection by values of its elements. An analogue for `filter` element in `Array`. It
-receives one argument:
+### `filterCollection(callback)`
+Filters collection by values of its elements. An analogue for `filter` element in `Array`. Receives one argument:
   * `callback(value, index, collection)` is a function that check element to satisfy the condition and returns boolean result. All 
   elements with `false` will be filtered. Function receives three arguments: `value`, `index` (it will be key for map or object) and 
   `collection`. 
@@ -60,8 +60,8 @@ Observable.ofCollection([1, 2])
   });
 ```
 
-* `findInCollection(callback)` is a method to find an element in collection by value. An analogue for `find` method of `Array`. It
-receives one argument:
+### `findInCollection(callback)`
+Searches an element in collection by value. An analogue for `find` method of `Array`. Receives one argument:
   * `callback(value, index, collection)` is a function that checks elements to satisfy the condition and returns the boolean result.
   `findInCollection` will return the first element satisfied the condition. Function receives three arguments: `value`, `index` (it will 
   be key for map or object) and `collection`.
@@ -75,10 +75,11 @@ Observable.ofCollection([1, 2])
   });
 ```
 
-* `forEachInCollection(callback)` is a method to iterate collection by value. An analogue for `forEach` method of `Array`. It receives one
-argument: 
+### `forEachInCollection(callback)`
+Iterates collection by value. An analogue for `forEach` method of `Array`. Receives one argument: 
   * `callback(value, index, collection)` is a function that provides collection's observable value for user. This function can return 
-  nothing and can change no value inside the Observables. 
+  nothing and can change no value inside the Observables. Function receives three arguments: `value`, `index` (it will be key for map or
+  object) and `collection`. 
   
 ```javascript
 Observable.ofCollection([1, 2])
@@ -90,7 +91,8 @@ Observable.ofCollection([1, 2])
   });
 ```
 
-* `reverseCollection` is a method to reverse collection. An analogue for `reverse` method of `Array`. It receives no arguments. 
+### `reverseCollection()`
+Reverses collection. An analogue for `reverse` method of `Array`. Receives no arguments. 
 
 ```javascript
 Observable.ofCollection([1, 2])
