@@ -111,10 +111,11 @@ It has following methods:
   * `keys` (optional). Array, if it exists constructor will create subjects by these keys and put them to `SubjectMap`. 
 * `get(key)`. Gets subject by `key` if it exists or creates new one. The `key` can have any type, like a `key` in `Map`. 
 * `remove(key)`. Removes subject by `key`.
-* `keys()`. Gets the list of all existing keys.
-* `values()`. Gets list of all subjects.
-* `entries()`. Gets list of pairs `[key, subject]`. 
+* `keys()`. Gets iterator all existing keys.
+* `values()`. Gets iterator for all subjects.
+* `entries()`. Gets iterator for pairs `[key, subject]`. 
 * `forEach(callback)`. Iterates over the keys and values.
+* `[Symbol.iterator]`. Make this map iterable with `for` cycle.
 
 ```javascript
 const changeElement = new SubjectMap();
