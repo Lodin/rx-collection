@@ -18,9 +18,7 @@ Initializes collection and converts all its elements to Observables. Receives tw
     * `Array`,
     * `Object`,
     * `Map`,
-    * `WeakMap`,
     * `Set`,
-    * `WeakSet`
   * `creator` - is a function that receives element of collection and returns Observable of it. The default value is `Observable.of`. If the
 value is already Observable, it will be skipped.
  
