@@ -1,14 +1,14 @@
 import * as isPlainObject from 'is-plain-object';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
+import {ArrayCollection, MapCollection, ObjectCollection, SetCollection} from '../typings';
 
-export type ObjectCollection<T> = {[key: string]: T};
 export type Creator<T> = (value: T) => Observable<T>;
 
-export default function ofCollection<K, T>(collection: Map<K, T>, creator?: Creator<T>): Observable<Map<K, Observable<T>>>;
-export default function ofCollection<T>(collection: Set<T>, creator?: Creator<T>): Observable<Set<Observable<T>>>;
-export default function ofCollection<T>(collection: T[], creator?: Creator<T>): Observable<Observable<T>[]>;
-export default function ofCollection(collection: ObjectCollection<any>, creator?: Creator<any>): Observable<ObjectCollection<Observable<any>>>;
+export default function ofCollection<K, T>(collection: Map<K, T>, creator?: Creator<T>): MapCollection<K, T>;
+export default function ofCollection<T>(collection: Set<T>, creator?: Creator<T>): SetCollection<T>;
+export default function ofCollection<T>(collection: T[], creator?: Creator<T>): ArrayCollection<T>;
+export default function ofCollection(collection: {[key: string]: any}, creator?: Creator<any>): ObjectCollection<any>;
 
 export default function ofCollection(collection: any, creator: Creator<any> = of): any {
   let result: any;
@@ -38,8 +38,8 @@ function prepareArrayCollection<T>(collection: T[], creator: Creator<T>): Observ
   return result;
 }
 
-function prepareObjectCollection(collection: ObjectCollection<any>, creator: Creator<any>): ObjectCollection<Observable<any>> {
-  const result: ObjectCollection<Observable<any>> = {};
+function prepareObjectCollection(collection: {[key: string]: any}, creator: Creator<any>): {[key: string]: Observable<any>} {
+  const result: {[key: string]: Observable<any>} = {};
 
   for (const key of Object.keys(collection)) {
     result[key] = creator(collection[key]);
