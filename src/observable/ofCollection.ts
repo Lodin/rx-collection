@@ -1,7 +1,16 @@
 import * as isPlainObject from 'is-plain-object';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
-import {ArrayCollection, MapCollection, ObjectCollection, SetCollection} from '../typings';
+import {
+  ArrayCollection,
+  ArrayContent,
+  MapCollection,
+  MapContent,
+  ObjectCollection,
+  ObjectContent,
+  SetCollection,
+  SetContent
+} from '../typings';
 
 export type Creator<T> = (value: T) => Observable<T>;
 
@@ -28,27 +37,7 @@ export default function ofCollection(collection: any, creator: Creator<any> = of
   return of.call(Observable, result);
 }
 
-function prepareArrayCollection<T>(collection: T[], creator: Creator<T>): Observable<T>[] {
-  const result = new Array<Observable<T>>(collection.length);
-
-  for (let i = 0, len = collection.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-    result[i] = creator(collection[i]);
-  }
-
-  return result;
-}
-
-function prepareObjectCollection(collection: {[key: string]: any}, creator: Creator<any>): {[key: string]: Observable<any>} {
-  const result: {[key: string]: Observable<any>} = {};
-
-  for (const key of Object.keys(collection)) {
-    result[key] = creator(collection[key]);
-  }
-
-  return result;
-}
-
-function prepareMapCollection<K, T>(collection: Map<K, T>, creator: Creator<T>): Map<K, Observable<T>> {
+function prepareMapCollection<K, T>(collection: Map<K, T>, creator: Creator<T>): MapContent<K, T> {
   const result = new Map();
 
   for (const [key, value] of collection) {
@@ -58,11 +47,31 @@ function prepareMapCollection<K, T>(collection: Map<K, T>, creator: Creator<T>):
   return result;
 }
 
-function prepareSetCollection<T>(collection: Set<T>, creator: Creator<T>): Set<Observable<T>> {
+function prepareSetCollection<T>(collection: Set<T>, creator: Creator<T>): SetContent<T> {
   const result = new Set();
 
   for (const element of collection) {
     result.add(creator(element));
+  }
+
+  return result;
+}
+
+function prepareArrayCollection<T>(collection: T[], creator: Creator<T>): ArrayContent<T> {
+  const result = new Array<Observable<T>>(collection.length);
+
+  for (let i = 0, len = collection.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
+    result[i] = creator(collection[i]);
+  }
+
+  return result;
+}
+
+function prepareObjectCollection(collection: {[key: string]: any}, creator: Creator<any>): ObjectContent<any> {
+  const result: {[key: string]: Observable<any>} = {};
+
+  for (const key of Object.keys(collection)) {
+    result[key] = creator(collection[key]);
   }
 
   return result;
