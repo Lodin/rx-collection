@@ -36,18 +36,20 @@ export default function filterCollection(this: Observable<any>, callback: CheckC
 }
 
 function filterMapCollection<K, T>(collection: MapContent<K, T>, callback: MapCheckCallback<K, T>): MapCollection<K, T> {
-  const keys = [...collection.keys()];
+  const keys = collection.keys();
   const elements = [...collection.values()];
 
   return combineLatest(elements, (...values: T[]) => {
     const result = new Map();
 
     for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-      if (!callback(values[i], keys[i], collection)) {
+      const key = keys.next().value;
+
+      if (!callback(values[i], key, collection)) {
         continue;
       }
 
-      result.set(keys[i], elements[i]);
+      result.set(key, elements[i]);
     }
 
     return result;
