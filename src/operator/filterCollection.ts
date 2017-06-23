@@ -1,7 +1,6 @@
 import {Observable} from 'rxjs/Observable';
-import {Subscriber} from 'rxjs/Subscriber';
 import {mergeMap} from 'rxjs/operator/mergeMap';
-import {combineLatest} from 'rxjs/operator/combineLatest';
+import {combineLatest} from 'rxjs/observable/combineLatest';
 import {
   ArrayCollection,
   ArrayContent,
@@ -46,85 +45,77 @@ export default function filterCollection(this: Observable<any>, callback: Filter
 }
 
 function filterMapCollection<K, T>(collection: MapContent<K, T>, callback: MapFilterCallback<K, T>): MapCollection<K, T> {
-  return Observable.create((subscriber: Subscriber<MapContent<K, T>>) => {
-    const keys = [...collection.keys()];
-    const values = [...collection.values()];
+  const keys = [...collection.keys()];
+  const elements = [...collection.values()];
 
-    combineLatest.call(Observable, values, (...v: T[]) => {
-      const result = new Map();
+  return combineLatest.call(Observable, elements, (...values: T[]) => {
+    const result = new Map();
 
-      for (let i = 0, len = v.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-        if (!callback(v[i], keys[i], collection)) {
-          continue;
-        }
-
-        result.set(keys[i], values[i]);
+    for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
+      if (!callback(values[i], keys[i], collection)) {
+        continue;
       }
 
-      subscriber.next(result);
-    });
+      result.set(keys[i], elements[i]);
+    }
+
+    return result;
   });
 }
 
 function filterSetCollection<T>(collection: SetContent<T>, callback: SetFilterCallback<T>): SetCollection<T> {
-  return Observable.create((subscriber: Subscriber<SetContent<T>>) => {
-    const values = [...collection.values()];
+  const elements = [...collection.values()];
 
-    combineLatest.call(Observable, values, (...v: T[]) => {
-      const result = new Set();
+  return combineLatest.call(Observable, elements, (...values: T[]) => {
+    const result = new Set();
 
-      for (let i = 0, len = v.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-        if (!callback(v[i], i, collection)) {
-          continue;
-        }
-
-        result.add(values[i]);
+    for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
+      if (!callback(values[i], i, collection)) {
+        continue;
       }
 
-      subscriber.next(result);
-    });
+      result.add(elements[i]);
+    }
+
+    return result;
   });
 }
 
 function filterArrayCollection<T>(collection: ArrayContent<T>, callback: ArrayFilterCallback<T>): ArrayCollection<T> {
-  return Observable.create((subscriber: Subscriber<ArrayContent<T>>) => {
-    combineLatest.call(Observable, collection, (...v: T[]) => {
-      const result = [];
+  return combineLatest.call(Observable, collection, (...values: T[]) => {
+    const result = [];
 
-      for (let i = 0, len = v.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-        if (!callback(v[i], i, collection)) {
-          continue;
-        }
-
-        result.push(collection[i]);
+    for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
+      if (!callback(values[i], i, collection)) {
+        continue;
       }
 
-      subscriber.next(result);
-    });
+      result.push(collection[i]);
+    }
+
+    return result;
   });
 }
 
 function filterObjectCollection(collection: ObjectContent<any>, callback: ObjectFilterCallback<any>): ObjectCollection<any> {
-  return Observable.create((subscriber: Subscriber<ObjectContent<any>>) => {
-    const keys = Object.keys(collection);
+  const keys = Object.keys(collection);
 
-    let values = new Array(keys.length);
-    for (let i = 0, len = keys.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-      values[i] = keys[i];
-    }
+  let elements = new Array(keys.length);
+  for (let i = 0, len = keys.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
+    elements[i] = collection[keys[i]];
+  }
 
-    combineLatest.call(Observable, values, (...v: any[]) => {
-      const result: ObjectContent<any> = {};
+  return combineLatest.call(Observable, elements, (...values: any[]) => {
+    const result: ObjectContent<any> = {};
 
-      for (let i = 0, len = v.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-        if (!callback(v[i], keys[i], collection)) {
-          continue;
-        }
-
-        result[keys[i]] = values[i];
+    for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
+      if (!callback(values[i], keys[i], collection)) {
+        continue;
       }
 
-      subscriber.next(result);
-    });
+      result[keys[i]] = elements[i];
+    }
+
+    return result;
   });
 }
