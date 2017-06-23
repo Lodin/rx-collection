@@ -1,31 +1,21 @@
+import * as isPlainObject from 'is-plain-object';
 import {Observable} from 'rxjs/Observable';
 import {mergeMap} from 'rxjs/operator/mergeMap';
 import {combineLatest} from 'rxjs/observable/combineLatest';
 import {
-  ArrayCollection,
-  ArrayContent,
-  MapCollection,
-  MapContent,
-  ObjectCollection,
-  ObjectContent,
-  SetCollection,
-  SetContent
+  ArrayCheckCallback, ArrayCollection, ArrayContent,
+  CheckCallback,
+  MapCheckCallback, MapCollection, MapContent,
+  ObjectCheckCallback, ObjectCollection, ObjectContent,
+  SetCheckCallback, SetCollection, SetContent,
 } from '../typings';
-import * as isPlainObject from 'is-plain-object';
 
-export type FilterCallback<T, K, C> = (value: T, index: K, collection: C) => boolean;
+export default function filterCollection<K, T>(this: MapCollection<K, T>, callback: MapCheckCallback<K, T>): MapCollection<K, T>;
+export default function filterCollection<T>(this: SetCollection<T>, callback: SetCheckCallback<T>): SetCollection<T>;
+export default function filterCollection<T>(this: ArrayCollection<T>, callback: ArrayCheckCallback<T>): ArrayCollection<T>;
+export default function filterCollection(this: ObjectCollection<any>, callback: ObjectCheckCallback<any>): ObjectCollection<any>
 
-export type MapFilterCallback<K, T> = FilterCallback<T, K, MapContent<K, T>>;
-export type SetFilterCallback<T> = FilterCallback<T, number, SetContent<T>>;
-export type ArrayFilterCallback<T> = FilterCallback<T, number, ArrayContent<T>>;
-export type ObjectFilterCallback<T> = FilterCallback<T, string, ObjectContent<T>>;
-
-export default function filterCollection<K, T>(this: MapCollection<K, T>, callback: MapFilterCallback<K, T>): MapCollection<K, T>;
-export default function filterCollection<T>(this: SetCollection<T>, callback: SetFilterCallback<T>): SetCollection<T>;
-export default function filterCollection<T>(this: ArrayCollection<T>, callback: ArrayFilterCallback<T>): ArrayCollection<T>;
-export default function filterCollection(this: ObjectCollection<any>, callback: ObjectFilterCallback<any>): ObjectCollection<any>
-
-export default function filterCollection(this: Observable<any>, callback: FilterCallback<any, any, any>): Observable<any> {
+export default function filterCollection(this: Observable<any>, callback: CheckCallback<any, any, any>): Observable<any> {
   return mergeMap.call(
     this,
     (collection: any) => {
@@ -40,15 +30,15 @@ export default function filterCollection(this: Observable<any>, callback: Filter
       } else {
         throw new TypeError('Unrecognized type of collection. Type should be "Array", "Object", "Map" or "Set"');
       }
-    }
+    },
   )
 }
 
-function filterMapCollection<K, T>(collection: MapContent<K, T>, callback: MapFilterCallback<K, T>): MapCollection<K, T> {
+function filterMapCollection<K, T>(collection: MapContent<K, T>, callback: MapCheckCallback<K, T>): MapCollection<K, T> {
   const keys = [...collection.keys()];
   const elements = [...collection.values()];
 
-  return combineLatest.call(Observable, elements, (...values: T[]) => {
+  return combineLatest(elements, (...values: T[]) => {
     const result = new Map();
 
     for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
@@ -63,10 +53,10 @@ function filterMapCollection<K, T>(collection: MapContent<K, T>, callback: MapFi
   });
 }
 
-function filterSetCollection<T>(collection: SetContent<T>, callback: SetFilterCallback<T>): SetCollection<T> {
+function filterSetCollection<T>(collection: SetContent<T>, callback: SetCheckCallback<T>): SetCollection<T> {
   const elements = [...collection.values()];
 
-  return combineLatest.call(Observable, elements, (...values: T[]) => {
+  return combineLatest(elements, (...values: T[]) => {
     const result = new Set();
 
     for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
@@ -81,8 +71,8 @@ function filterSetCollection<T>(collection: SetContent<T>, callback: SetFilterCa
   });
 }
 
-function filterArrayCollection<T>(collection: ArrayContent<T>, callback: ArrayFilterCallback<T>): ArrayCollection<T> {
-  return combineLatest.call(Observable, collection, (...values: T[]) => {
+function filterArrayCollection<T>(collection: ArrayContent<T>, callback: ArrayCheckCallback<T>): ArrayCollection<T> {
+  return combineLatest(collection, (...values: T[]) => {
     const result = [];
 
     for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
@@ -97,7 +87,7 @@ function filterArrayCollection<T>(collection: ArrayContent<T>, callback: ArrayFi
   });
 }
 
-function filterObjectCollection(collection: ObjectContent<any>, callback: ObjectFilterCallback<any>): ObjectCollection<any> {
+function filterObjectCollection(collection: ObjectContent<any>, callback: ObjectCheckCallback<any>): ObjectCollection<any> {
   const keys = Object.keys(collection);
 
   let elements = new Array(keys.length);
@@ -105,7 +95,7 @@ function filterObjectCollection(collection: ObjectContent<any>, callback: Object
     elements[i] = collection[keys[i]];
   }
 
-  return combineLatest.call(Observable, elements, (...values: any[]) => {
+  return combineLatest(elements, (...values: any[]) => {
     const result: ObjectContent<any> = {};
 
     for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
