@@ -9,6 +9,7 @@ import {
   ObjectCheckCallback, ObjectCollection, ObjectContent,
   SetCheckCallback, SetCollection, SetContent,
 } from '../typings';
+import getObjectKeysAndValues from '../utils/getObjectKeysAndValues';
 
 export default function filterCollection<K, T>(this: MapCollection<K, T>, callback: MapCheckCallback<K, T>): MapCollection<K, T>;
 export default function filterCollection<T>(this: SetCollection<T>, callback: SetCheckCallback<T>): SetCollection<T>;
@@ -88,12 +89,7 @@ function filterArrayCollection<T>(collection: ArrayContent<T>, callback: ArrayCh
 }
 
 function filterObjectCollection(collection: ObjectContent<any>, callback: ObjectCheckCallback<any>): ObjectCollection<any> {
-  const keys = Object.keys(collection);
-
-  let elements = new Array(keys.length);
-  for (let i = 0, len = keys.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-    elements[i] = collection[keys[i]];
-  }
+  const [keys, elements] = getObjectKeysAndValues(collection);
 
   return combineLatest(elements, (...values: any[]) => {
     const result: ObjectContent<any> = {};
