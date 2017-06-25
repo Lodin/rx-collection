@@ -3,6 +3,7 @@
   "rules": {
     "one-variable-per-declaration": [true, "ignore-for-loop"],
     "match-default-export-name": false,
+    "mocha-no-side-effect-code": false,
     "no-any": false,
     "no-empty-interface": false,
     "no-invalid-this": false,
