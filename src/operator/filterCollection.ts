@@ -16,7 +16,7 @@ import filterSetCollectionHelper from './helpers/filterSetCollectionHelper';
 export default function filterCollection<K, T>(this: MapCollection<K, T>, callback: MapCheckCallback<K, T>): MapCollection<K, T>;
 export default function filterCollection<T>(this: SetCollection<T>, callback: SetCheckCallback<T>): SetCollection<T>;
 export default function filterCollection<T>(this: ArrayCollection<T>, callback: ArrayCheckCallback<T>): ArrayCollection<T>;
-export default function filterCollection(this: ObjectCollection<any>, callback: ObjectCheckCallback<any>): ObjectCollection<any>
+export default function filterCollection(this: ObjectCollection<any>, callback: ObjectCheckCallback<any>): ObjectCollection<any>;
 
 export default function filterCollection(this: Observable<any>, callback: CheckCallback<any, any, any>): Observable<any> {
   return mergeMap.call(
@@ -34,11 +34,5 @@ export default function filterCollection(this: Observable<any>, callback: CheckC
         throw new TypeError('Unrecognized type of collection. Type should be "Array", "Object", "Map" or "Set"');
       }
     },
-  )
+  );
 }
-
-
-
-
-
-

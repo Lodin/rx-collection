@@ -4,8 +4,10 @@ export type CheckCallback<T, K, C> = (value: T, index: K, collection: C) => bool
 
 export type MapContent<K, T> = Map<K, Observable<T>>;
 export type SetContent<T> = Set<Observable<T>>;
-export type ArrayContent<T> = Observable<T>[];
-export type ObjectContent<T> = {[key: string]: Observable<T>};
+export type ArrayContent<T> = Array<Observable<T>>;
+export interface ObjectContent<T> {
+  [key: string]: Observable<T>;
+}
 
 export type MapCollection<K, T> = Observable<MapContent<K, T>>;
 export type SetCollection<T> = Observable<SetContent<T>>;

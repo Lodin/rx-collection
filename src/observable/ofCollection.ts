@@ -9,7 +9,7 @@ import {
   ObjectCollection,
   ObjectContent,
   SetCollection,
-  SetContent
+  SetContent,
 } from '../typings';
 
 export type Creator<T> = (value: T) => Observable<T>;
