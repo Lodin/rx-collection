@@ -1,10 +1,12 @@
+// tslint:disable:ban-types
+
 import 'rxjs/add/observable/of';
 import {Observable} from 'rxjs/Observable';
 import {
   ArrayCollection, ArrayContent,
   MapCollection, MapContent,
   ObjectCollection, ObjectContent,
-  SetCollection, SetContent
+  SetCollection, SetContent,
 } from '../../../src/typings';
 
 export function filterMapCollectionTestHelper(operator: Function): () => void {
@@ -20,7 +22,7 @@ export function filterMapCollectionTestHelper(operator: Function): () => void {
         .subscribe((collection: MapContent<string, number>) => {
           expect(collection.size).toBe(1);
 
-          const second = <Observable<number>>collection.get('second');
+          const second = collection.get('second') as Observable<number>;
           second.subscribe((value: number) => {
             expect(value).toBe(200);
             done();
@@ -60,14 +62,14 @@ export function filterMapCollectionTestHelper(operator: Function): () => void {
 
 export function filterSetCollectionTestHelper(operator: Function): () => void {
   return () => {
-    let collection: SetCollection<number>;
+    let source: SetCollection<number>;
 
     beforeEach(() => {
-      collection = Observable.of(new Set([Observable.of(100), Observable.of(200)]));
+      source = Observable.of(new Set([Observable.of(100), Observable.of(200)]));
     });
 
     it('should filter collection', (done) => {
-      operator.call(collection, (value: number) => value !== 100)
+      operator.call(source, (value: number) => value !== 100)
         .subscribe((collection: SetContent<number>) => {
           expect(collection.size).toBe(1);
 
@@ -81,7 +83,7 @@ export function filterSetCollectionTestHelper(operator: Function): () => void {
 
     it('should get index and collection along with value', (done) => {
       let counter = 0;
-      operator.call(collection, (value: number, index: number, collection: SetContent<number>) => {
+      operator.call(source, (value: number, index: number, collection: SetContent<number>) => {
         switch (counter) {
           case 0:
             expect(value).toEqual(100);
@@ -111,14 +113,14 @@ export function filterSetCollectionTestHelper(operator: Function): () => void {
 
 export function filterArrayCollectionTestHelper(operator: Function): () => void {
   return () => {
-    let collection: ArrayCollection<number>;
+    let source: ArrayCollection<number>;
 
     beforeEach(() => {
-      collection = Observable.of([Observable.of(100), Observable.of(200)]);
+      source = Observable.of([Observable.of(100), Observable.of(200)]);
     });
 
     it('should filter collection', (done) => {
-      operator.call(collection, (value: number) => value !== 100)
+      operator.call(source, (value: number) => value !== 100)
         .subscribe((collection: ArrayContent<number>) => {
           expect(collection.length).toBe(1);
 
@@ -131,7 +133,7 @@ export function filterArrayCollectionTestHelper(operator: Function): () => void 
 
     it('should get index and collection along with value', (done) => {
       let counter = 0;
-      operator.call(collection, (value: number, index: number, collection: ArrayContent<number>) => {
+      operator.call(source, (value: number, index: number, collection: ArrayContent<number>) => {
         switch (counter) {
           case 0:
             expect(value).toEqual(100);
@@ -161,14 +163,14 @@ export function filterArrayCollectionTestHelper(operator: Function): () => void 
 
 export function filterObjectCollectionTestHelper(operator: Function): () => void {
   return () => {
-    let collection: ObjectCollection<number>;
+    let source: ObjectCollection<number>;
 
     beforeEach(() => {
-      collection = Observable.of({first: Observable.of(100), second: Observable.of(200)});
+      source = Observable.of({first: Observable.of(100), second: Observable.of(200)});
     });
 
     it('should filter collection', (done) => {
-      operator.call(collection, (value: number) => value !== 100)
+      operator.call(source, (value: number) => value !== 100)
         .subscribe((collection: ObjectContent<any>) => {
           expect(Object.keys(collection).length).toBe(1);
 
@@ -181,7 +183,7 @@ export function filterObjectCollectionTestHelper(operator: Function): () => void
 
     it('should get key and collection along with value', (done) => {
       let counter = 0;
-      operator.call(collection, (value: number, index: string, collection: ObjectContent<any>) => {
+      operator.call(source, (value: number, index: string, collection: ObjectContent<any>) => {
         switch (counter) {
           case 0:
             expect(value).toEqual(100);

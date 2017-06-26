@@ -27,17 +27,17 @@ describe('Static operator "ofCollection"', () => {
     Observable.ofCollection({first: 1, second: 2})
       .subscribe(({first, second}) => {
         checkCollectionElements(first, second, done);
-      })
+      });
   });
 
   it('should create map collection', (done) => {
-    const col = Observable.ofCollection(new Map<string, number>([['first', 1], ['second', 2]]))
-      col.subscribe((map) => {
-        const first = <Observable<number>>map.get('first');
-        const second = <Observable<number>>map.get('second');
+    const col = Observable.ofCollection(new Map<string, number>([['first', 1], ['second', 2]]));
+    col.subscribe((map) => {
+      const first = map.get('first') as Observable<number>;
+      const second = map.get('second') as Observable<number>;
 
-        checkCollectionElements(first, second, done);
-      });
+      checkCollectionElements(first, second, done);
+    });
   });
 
   it('should create set collection', (done) => {
@@ -45,11 +45,11 @@ describe('Static operator "ofCollection"', () => {
       .subscribe((set) => {
         const [first, second] = [...set.values()];
         checkCollectionElements(first, second, done);
-      })
+      });
   });
 
   it('should throw a type error if the collection type is wrong', () => {
-    expect(() => Observable.ofCollection(<any>1))
+    expect(() => Observable.ofCollection(1 as any))
       .toThrow(new TypeError('Unrecognized type of collection. Type should be "Array", "Object", "Map" or "Set"'));
   });
 });

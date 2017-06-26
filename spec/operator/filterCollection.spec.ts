@@ -5,7 +5,7 @@ import filterCollection from '../../src/operator/filterCollection';
 import {
   filterArrayCollectionTestHelper,
   filterMapCollectionTestHelper, filterObjectCollectionTestHelper,
-  filterSetCollectionTestHelper
+  filterSetCollectionTestHelper,
 } from './utils/filterCollectionTestHelpers';
 
 describe('Operator "filterCollection"', () => {
@@ -29,7 +29,7 @@ describe('Operator "filterCollection"', () => {
   it('should throw type error if the collection type is wrong', () => {
     expect(() => {
       filterCollection
-        .call(Observable.of(<any>1), (value: number) => value !== 100)
+        .call(Observable.of(1), (value: number) => value !== 100)
         .subscribe((value: number) => value);
     }).toThrow(new TypeError('Unrecognized type of collection. Type should be "Array", "Object", "Map" or "Set"'));
   });

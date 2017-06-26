@@ -5,12 +5,12 @@ describe('Class "SubjectMap"', () => {
   describe('during creation', () => {
     it('should create subjects by received array of keys', () => {
       const map = new SubjectMap(['key1', 'key2']);
-      expect([...(<any> map)._subjects.keys()]).toEqual(['key1', 'key2']);
+      expect([...(map as any).subjects.keys()]).toEqual(['key1', 'key2']);
     });
 
     it('should create empty map if there is no keys', () => {
       const map = new SubjectMap();
-      expect([...(<any> map)._subjects.keys()]).toEqual([]);
+      expect([...(map as any).subjects.keys()]).toEqual([]);
     });
   });
 
@@ -22,15 +22,15 @@ describe('Class "SubjectMap"', () => {
     });
 
     it('should get an iterator for all map keys', () => {
-      expect([...map.keys()]).toEqual(['key1', 'key2'])
+      expect([...map.keys()]).toEqual(['key1', 'key2']);
     });
 
     it('should get an iterator for all map values', () => {
-      expect(<any>[...map.values()]).toEqual([jasmine.any(Subject), jasmine.any(Subject)]);
+      expect([...map.values()] as any).toEqual([jasmine.any(Subject), jasmine.any(Subject)]);
     });
 
     it('should get an iterator for all map entries', () => {
-      expect(<any>[...map.entries()]).toEqual([['key1', jasmine.any(Subject)], ['key2', jasmine.any(Subject)]])
+      expect([...map.entries()] as any).toEqual([['key1', jasmine.any(Subject)], ['key2', jasmine.any(Subject)]]);
     });
 
     it('should create new element if it is not already exist', () => {
