@@ -14,14 +14,20 @@ $ npm install --save rxjs rx-collection
 ## API
 ### `ofCollection(collection, creator)`
 Initializes collection and converts all its elements to Observables. Receives two arguments:
-  * `collection` - the collection itself. It might be an instance of:
-    * `Array`,
-    * `Object`,
-    * `Map`,
-    * `Set`,
-  * `creator` - is a function that receives element of collection and returns Observable of it. The default value is `Observable.of`. If the
+* `collection` - the collection itself. It might be an instance of:
+  * `Array`,
+  * `Object`,
+  * `Map`,
+  * `Set`,
+* `creator` - is a function that receives element of collection and returns Observable of it. The default value is `Observable.of`. If the
 value is already Observable, it will be skipped.
- 
+
+Also you can use separate methods to reduce the result bundle size: 
+* `ofArrayCollection(collection, creator)`,
+* `ofObjectCollection(collection, creator)`,
+* `ofMapCollection(collection, creator)`,
+* `ofSetCollection(collection, creator)`.
+
 ```javascript
 const collection = new Map([
   ['key1', 1],
@@ -57,6 +63,11 @@ Observable.ofCollection([1, 2])
     val[0].subscribe(el => assert(el === 2));
   });
 ```
+Separate methods: 
+* `filterArrayCollection(callback)`,
+* `filterObjectCollection(callback)`,
+* `filterMapCollection(callback)`,
+* `filterSetCollection(callback)`.
 
 ### `findInCollection(callback)`
 Searches an element in collection by value. An analogue for `find` method of `Array`. Receives one argument:
@@ -72,6 +83,11 @@ Observable.ofCollection([1, 2])
     val.subscribe(el => assert(el === 1));
   });
 ```
+Separate methods: 
+* `findInArrayCollection(callback)`,
+* `findInObjectCollection(callback)`,
+* `findInMapCollection(callback)`,
+* `findInSetCollection(callback)`.
 
 ### `forEachInCollection(callback)`
 Iterates collection by value. An analogue for `forEach` method of `Array`. Receives one argument: 
@@ -88,18 +104,11 @@ Observable.ofCollection([1, 2])
     console.log(val);
   });
 ```
-
-### `reverseCollection()`
-Reverses collection. An analogue for `reverse` method of `Array`. Receives no arguments. 
-
-```javascript
-Observable.ofCollection([1, 2])
-  .reverseCollection()
-  .subscribe((val) => {
-    val[0].subscribe(el => assert(el === 2));
-    val[1].subscribe(el => assert(el === 1));
-  });
-```
+Separate methods: 
+* `forEachInArrayCollection(callback)`,
+* `forEachInObjectCollection(callback)`,
+* `forEachInMapCollection(callback)`,
+* `forEachInSetCollection(callback)`.
 
 ### SubjectMap
 An abstraction that allows to create same subject for every collection element, e.g. for merging this subject to collection element. 
