@@ -1,5 +1,4 @@
 import * as isPlainObject from 'is-plain-object';
-import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
 import {ArrayCollection, Creator, MapCollection, ObjectCollection, SetCollection} from '../typings';
 import ofArrayCollectionHelper from './helpers/ofArrayCollectionHelper';
@@ -27,5 +26,5 @@ export default function ofCollection(collection: any, creator: Creator<any> = of
     throw new TypeError('Unrecognized type of collection. Type should be "Array", "Object", "Map" or "Set"');
   }
 
-  return of.call(Observable, result);
+  return of(result);
 }
