@@ -1,9 +1,9 @@
 import {combineLatest} from 'rxjs/observable/combineLatest';
-import {ObjectCollection, ObjectContent, ObjectForEachCallback} from '../../typings';
+import {ObjectCheckCallback, ObjectCollection, ObjectContent} from '../../typings';
 import getObjectKeysAndValues from '../../utils/getObjectKeysAndValues';
 
 export default
-function filterObjectCollectionHelper(collection: ObjectContent<any>, callback: ObjectForEachCallback<any>): ObjectCollection<any> {
+function filterObjectCollectionHelper(collection: ObjectContent<any>, callback: ObjectCheckCallback<any>): ObjectCollection<any> {
   const [keys, elements] = getObjectKeysAndValues(collection);
 
   return combineLatest(elements, (...values: any[]) => {

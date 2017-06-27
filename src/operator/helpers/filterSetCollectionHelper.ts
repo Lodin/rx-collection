@@ -1,8 +1,8 @@
 import {combineLatest} from 'rxjs/observable/combineLatest';
-import {SetCollection, SetContent, SetForEachCallback} from '../../typings';
+import {SetCheckCallback, SetCollection, SetContent} from '../../typings';
 
 export default
-function filterSetCollectionHelper<T>(collection: SetContent<T>, callback: SetForEachCallback<T>): SetCollection<T> {
+function filterSetCollectionHelper<T>(collection: SetContent<T>, callback: SetCheckCallback<T>): SetCollection<T> {
   const elements = [...collection.values()];
 
   return combineLatest(elements, (...values: T[]) => {

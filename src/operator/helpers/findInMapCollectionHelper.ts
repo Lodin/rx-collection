@@ -1,11 +1,11 @@
 import {Observable} from 'rxjs/Observable';
 import {combineLatest} from 'rxjs/observable/combineLatest';
 import {mergeMap} from 'rxjs/operator/mergeMap';
-import {MapContent, MapForEachCallback} from '../../typings';
+import {MapCheckCallback, MapContent} from '../../typings';
 import {checkForNothing, nothing} from './nothing';
 
 export default
-function findInMapCollectionHelper<K, T>(collection: MapContent<K, T>, callback: MapForEachCallback<K, T>): Observable<T> {
+function findInMapCollectionHelper<K, T>(collection: MapContent<K, T>, callback: MapCheckCallback<K, T>): Observable<T> {
   const keys = collection.keys();
 
   return mergeMap.call(

@@ -18,7 +18,7 @@ export default function forEachInCollection<T>(this: SetCollection<T>, callback:
 export default function forEachInCollection<T>(this: ArrayCollection<T>, callback: ArrayForEachCallback<T>): ArrayCollection<T>;
 export default function forEachInCollection(this: ObjectCollection<any>, callback: ObjectForEachCallback<any>): ObjectCollection<any>;
 
-export default function forEachInCollection(this: Observable<any>, callback: CommonForEachCallback<any, any, any>): Observable<any> {
+export default function forEachInCollection(this: Observable<any>, callback: CommonForEachCallback<any, any, any, void>): Observable<any> {
   return _do.call(
     this,
     (collection: any) => {
