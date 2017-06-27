@@ -10,11 +10,8 @@ import {
 
 describe('Operator "filterCollection"', () => {
   describe('with map collection', filterMapCollectionTestHelper(filterCollection));
-
   describe('with set collection', filterSetCollectionTestHelper(filterCollection));
-
   describe('with array collection', filterArrayCollectionTestHelper(filterCollection));
-
   describe('with object collection', filterObjectCollectionTestHelper(filterCollection));
 
   it('should work when added to Observable prototype', (done) => {
