@@ -1,18 +1,11 @@
 import * as isPlainObject from 'is-plain-object';
 import {Observable} from 'rxjs/Observable';
 import {of} from 'rxjs/observable/of';
-import {
-  ArrayCollection,
-  ArrayContent,
-  MapCollection,
-  MapContent,
-  ObjectCollection,
-  ObjectContent,
-  SetCollection,
-  SetContent,
-} from '../typings';
-
-export type Creator<T> = (value: T) => Observable<T>;
+import {ArrayCollection, Creator, MapCollection, ObjectCollection, SetCollection} from '../typings';
+import ofArrayCollectionHelper from './helpers/ofArrayCollectionHelper';
+import ofMapCollectionHelper from './helpers/ofMapCollectionHelper';
+import ofObjectCollectionHelper from './helpers/ofObjectCollectionHelper';
+import ofSetCollectionHelper from './helpers/ofSetCollectionHelper';
 
 export default function ofCollection<K, T>(collection: Map<K, T>, creator?: Creator<T>): MapCollection<K, T>;
 export default function ofCollection<T>(collection: Set<T>, creator?: Creator<T>): SetCollection<T>;
@@ -23,56 +16,16 @@ export default function ofCollection(collection: any, creator: Creator<any> = of
   let result: any;
 
   if (Array.isArray(collection)) {
-    result = prepareArrayCollection(collection, creator);
+    result = ofArrayCollectionHelper(collection, creator);
   } else if (isPlainObject(collection)) {
-    result = prepareObjectCollection(collection, creator);
+    result = ofObjectCollectionHelper(collection, creator);
   } else if (collection instanceof Map) {
-    result = prepareMapCollection(collection, creator);
+    result = ofMapCollectionHelper(collection, creator);
   } else if (collection instanceof Set) {
-    result = prepareSetCollection(collection, creator);
+    result = ofSetCollectionHelper(collection, creator);
   } else {
     throw new TypeError('Unrecognized type of collection. Type should be "Array", "Object", "Map" or "Set"');
   }
 
   return of.call(Observable, result);
-}
-
-function prepareMapCollection<K, T>(collection: Map<K, T>, creator: Creator<T>): MapContent<K, T> {
-  const result = new Map();
-
-  for (const [key, value] of collection) {
-    result.set(key, creator(value));
-  }
-
-  return result;
-}
-
-function prepareSetCollection<T>(collection: Set<T>, creator: Creator<T>): SetContent<T> {
-  const result = new Set();
-
-  for (const element of collection) {
-    result.add(creator(element));
-  }
-
-  return result;
-}
-
-function prepareArrayCollection<T>(collection: T[], creator: Creator<T>): ArrayContent<T> {
-  const result = new Array<Observable<T>>(collection.length);
-
-  for (let i = 0, len = collection.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
-    result[i] = creator(collection[i]);
-  }
-
-  return result;
-}
-
-function prepareObjectCollection(collection: {[key: string]: any}, creator: Creator<any>): ObjectContent<any> {
-  const result: {[key: string]: Observable<any>} = {};
-
-  for (const key of Object.keys(collection)) {
-    result[key] = creator(collection[key]);
-  }
-
-  return result;
 }

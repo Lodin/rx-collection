@@ -1,5 +1,6 @@
 import {Observable} from 'rxjs/Observable';
 
+export type Creator<T> = (value: T) => Observable<T>;
 export type CheckCallback<T, K, C> = (value: T, index: K, collection: C) => boolean;
 
 export type MapContent<K, T> = Map<K, Observable<T>>;
