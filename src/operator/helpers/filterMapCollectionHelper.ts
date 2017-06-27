@@ -1,8 +1,8 @@
 import {combineLatest} from 'rxjs/observable/combineLatest';
-import {MapCheckCallback, MapCollection, MapContent} from '../../typings';
+import {MapCollection, MapContent, MapForEachCallback} from '../../typings';
 
 export default
-function filterMapCollectionHelper<K, T>(collection: MapContent<K, T>, callback: MapCheckCallback<K, T>): MapCollection<K, T> {
+function filterMapCollectionHelper<K, T>(collection: MapContent<K, T>, callback: MapForEachCallback<K, T>): MapCollection<K, T> {
   const keys = collection.keys();
   const elements = [...collection.values()];
 

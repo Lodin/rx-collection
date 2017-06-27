@@ -2,23 +2,23 @@ import * as isPlainObject from 'is-plain-object';
 import {Observable} from 'rxjs/Observable';
 import {mergeMap} from 'rxjs/operator/mergeMap';
 import {
-  ArrayCheckCallback, ArrayCollection,
-  CheckCallback,
-  MapCheckCallback, MapCollection,
-  ObjectCheckCallback, ObjectCollection,
-  SetCheckCallback, SetCollection,
+  ArrayCollection, ArrayForEachCallback,
+  CommonForEachCallback,
+  MapCollection, MapForEachCallback,
+  ObjectCollection, ObjectForEachCallback,
+  SetCollection, SetForEachCallback,
 } from '../typings';
 import findInArrayCollectionHelper from './helpers/findInArrayCollectionHelper';
 import findInMapCollectionHelper from './helpers/findInMapCollectionHelper';
 import findInObjectCollectionHelper from './helpers/findInObjectCollectionHelper';
 import findInSetCollectionHelper from './helpers/findInSetCollectionHelper';
 
-export default function findInCollection<K, T>(this: MapCollection<K, T>, callback: MapCheckCallback<K, T>): Observable<T>;
-export default function findInCollection<T>(this: SetCollection<T>, callback: SetCheckCallback<T>): Observable<T>;
-export default function findInCollection<T>(this: ArrayCollection<T>, callback: ArrayCheckCallback<T>): Observable<T>;
-export default function findInCollection(this: ObjectCollection<any>, callback: ObjectCheckCallback<any>): Observable<any>;
+export default function findInCollection<K, T>(this: MapCollection<K, T>, callback: MapForEachCallback<K, T>): Observable<T>;
+export default function findInCollection<T>(this: SetCollection<T>, callback: SetForEachCallback<T>): Observable<T>;
+export default function findInCollection<T>(this: ArrayCollection<T>, callback: ArrayForEachCallback<T>): Observable<T>;
+export default function findInCollection(this: ObjectCollection<any>, callback: ObjectForEachCallback<any>): Observable<any>;
 
-export default function findInCollection(this: Observable<any>, callback: CheckCallback<any, any, any>): Observable<any> {
+export default function findInCollection(this: Observable<any>, callback: CommonForEachCallback<any, any, any>): Observable<any> {
   return mergeMap.call(
     this,
     (collection: any) => {

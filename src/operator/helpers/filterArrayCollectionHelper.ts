@@ -1,8 +1,8 @@
 import {combineLatest} from 'rxjs/observable/combineLatest';
-import {ArrayCheckCallback, ArrayCollection, ArrayContent} from '../../typings';
+import {ArrayCollection, ArrayContent, ArrayForEachCallback} from '../../typings';
 
 export default
-function filterArrayCollectionHelper<T>(collection: ArrayContent<T>, callback: ArrayCheckCallback<T>): ArrayCollection<T> {
+function filterArrayCollectionHelper<T>(collection: ArrayContent<T>, callback: ArrayForEachCallback<T>): ArrayCollection<T> {
   return combineLatest(collection, (...values: T[]) => {
     const result = [];
 
