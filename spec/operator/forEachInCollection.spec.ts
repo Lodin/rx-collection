@@ -30,4 +30,12 @@ describe('Operator "forEachInCollection"', () => {
         counter += 1;
       }).subscribe((collection: ArrayContent<number>) => collection);
   });
+
+  it('should throw type error if the collection type is wrong', () => {
+    expect(() => {
+      forEachInCollection
+        .call(Observable.of(1), (value: number) => value === 100)
+        .subscribe((value: number) => value);
+    }).toThrow(new TypeError('Unrecognized type of collection. Type should be "Array", "Object", "Map" or "Set"'));
+  });
 });
