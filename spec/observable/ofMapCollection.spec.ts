@@ -3,7 +3,7 @@ import '../../src/add/observable/ofMapCollection';
 import {checkCollectionElements} from './utils/ofCollectionTestHelpers';
 
 describe('Static operator "ofMapCollection"', () => {
-  it('should create array collection', (done) => {
+  it('should create collection', (done) => {
     Observable.ofMapCollection(new Map([['first', 1], ['second', 2]]))
       .subscribe((map) => {
         const first = map.get('first') as Observable<number>;
