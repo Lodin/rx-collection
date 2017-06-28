@@ -1,4 +1,10 @@
 # rx-collection
+
+[![Latest Stable Version](https://img.shields.io/npm/v/rx-collection.svg)](https://www.npmjs.com/package/rx-collection)
+[![License](https://img.shields.io/npm/l/rx-collection.svg)](./LICENSE)
+[![Build Status](https://img.shields.io/travis/poetez/rx-collection/master.svg)](https://travis-ci.org/poetez/rx-collection)
+[![Test Coverage](https://img.shields.io/codecov/c/github/poetez/rx-collection/master.svg)](https://codecov.io/gh/poetez/rx-collection)
+
 RxCollection is a set of utils for [RxJS 5](https://github.com/ReactiveX/rxjs) designed to handle observable collections of Observables. 
 **Observable collection of Observables** is an Observable that contains any type of collection (Array, Object, Map, etc.), all elements of 
 which are Observables. E.g. you want to create ToDo list that contains ToDo elements any of which is changeable, and you want to observe 
