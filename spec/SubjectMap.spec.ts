@@ -1,5 +1,5 @@
 import {Subject} from 'rxjs/Subject';
-import {SubjectMap} from '../src/SubjectMap';
+import SubjectMap from '../src/SubjectMap';
 
 describe('Class "SubjectMap"', () => {
   describe('during creation', () => {

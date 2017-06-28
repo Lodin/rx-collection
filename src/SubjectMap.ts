@@ -1,6 +1,6 @@
 import {Subject} from 'rxjs/Subject';
 
-export class SubjectMap<T, U> {
+export default class SubjectMap<T, U> {
   private subjects = new Map<T, Subject<U>>();
 
   public constructor(keys?: T[]) {
