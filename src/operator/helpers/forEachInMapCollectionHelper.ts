@@ -5,7 +5,7 @@ export default function forEachInMapCollectionHelper<K, T>(collection: MapConten
   const keys = collection.keys();
   const elements = [...collection.values()];
 
-  combineLatest(elements, (...values: T[]) => {
+  combineLatest(elements).subscribe((values: T[]) => {
     for (let i = 0, len = values.length; i < len; i++) { // tslint:disable-line:no-increment-decrement
       callback(values[i], keys.next().value, collection);
     }
