@@ -5,5 +5,5 @@ import {of} from 'rxjs/observable/of';
 export const nothing = Symbol('nothing');
 
 export function checkForNothing<T>(value: T|symbol): Observable<T> {
-  return value === nothing ? empty() : of(value);
+  return value === nothing ? empty() : of(value as T);
 }
