@@ -3509,9 +3509,9 @@ tslib@>=1.7.0, tslib@^1.0.0, tslib@^1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.7.1.tgz#bc8004164691923a79fe8378bbeb3da2017538ec"
 
-tslint-config-poetez@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/tslint-config-poetez/-/tslint-config-poetez-0.1.1.tgz#1983998ccf9d2b1c5cf535141205a35b54450163"
+tslint-config-poetez@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/tslint-config-poetez/-/tslint-config-poetez-0.2.0.tgz#b8db72d1a7ee934f75f63d9d0c0679495985d328"
   dependencies:
     tslint-eslint-rules "^4.0.0"
     tslint-microsoft-contrib "^5.0.0"

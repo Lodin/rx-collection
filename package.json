@@ -62,7 +62,7 @@
     "rimraf": "^2.6.1",
     "ts-node": "^3.0.6",
     "tslint": "^5.4.3",
-    "tslint-config-poetez": "^0.1.1",
+    "tslint-config-poetez": "^0.2.0",
     "typescript": "^2.3.4",
     "util.promisify": "^1.0.0",
     "webpack": "^2.6.1"
